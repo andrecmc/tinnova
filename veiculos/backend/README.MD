@@ -20,7 +20,7 @@ No Linux:
 
 ## Como rodar os testes automaticos
 
-- Executar:  .\gradlew --info test
+- Executar:  gradle --info test
 
 - O Relatorio dos testes em formato HTML será gerado em: .\build\reports\tests\test\index.html
 
