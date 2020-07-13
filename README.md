@@ -1,2 +1,1 @@
 # tinnova
-Tinnova interview
