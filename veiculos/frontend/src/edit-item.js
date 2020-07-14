@@ -47,7 +47,7 @@ class EditItem extends Component {
       <span className="form-caption">Editar veiculo:</span>&nbsp;<span>{this.state.veiculo}</span>
       <div>
         <label className="field-name">Veiculo:<br/>
-          <input value={this.state.veiculo} name="name" maxLength="40" required onChange={this.handleInputChange} placeholder="Nome do veiculo" />
+          <input value={this.state.veiculo} name="veiculo" maxLength="40" onChange={this.handleInputChange} placeholder="Nome do veiculo" />
         </label>
       </div>
       <div>

@@ -7,10 +7,53 @@ import EditItem from './edit-item';
 //import ItemService from './shared/mock-item-service';
 import ItemService from './shared/item-service';
 
-function isBigEnough(value) {
+function isUnsold(value) {
   return !value.vendido;
 }
 
+function daysBetween(date1, date2) {
+    //Get 1 day in milliseconds
+    var one_day=1000*60*60*24;
+
+    // Convert both dates to milliseconds
+    var date1_ms = date1.getTime();
+    var date2_ms = date2.getTime();
+  
+    // Calculate the difference in milliseconds
+    var difference_ms = date2_ms - date1_ms;
+      
+    // Convert back to days and return
+    return Math.round(difference_ms/one_day); 
+}
+
+function isRecent(value) {
+  var result=false;
+  if (value.created) {
+    if (daysBetween(new Date(value.created),new Date())<=7)
+    result=true;
+  }
+  return result;
+}
+
+function isYearInRange(start, end) {
+  return function(element) {
+    var result=false;
+    if (element.ano) {
+      if (element.ano>=start && element.ano<=end) result=true;
+    }
+    return result;
+  }
+}
+
+function isFromManufacturer(name) {
+  return function(element) {
+    var result=false;
+    if (element.marca) {
+      if (element.marca.valueOf() == name.valueOf()) result=true;
+    }
+    return result;
+  }
+}
 
 class App extends Component {
 
@@ -62,7 +105,14 @@ class App extends Component {
         </thead>
         <tbody>
           {listItems}
-          <tr><td colSpan="6">Numero de veiculos nao vendidos: {items.filter(isBigEnough).length}</td></tr>
+          <tr><td colSpan="6">Numero de veiculos nao vendidos: {items.filter(isUnsold).length}</td></tr>
+          <tr><td colSpan="6">Veiculos registrados na ultima semana: {items.filter(isRecent).length}</td></tr>
+          <tr><td colSpan="3">Veiculos da decada de 1960: {items.filter(isYearInRange(1960,1969)).length}</td><td colSpan="3">Veiculos da decada de 1970: {items.filter(isYearInRange(1970,1979)).length}</td></tr>
+          <tr><td colSpan="3">Veiculos da decada de 1980: {items.filter(isYearInRange(1980,1989)).length}</td><td colSpan="3">Veiculos da decada de 1990: {items.filter(isYearInRange(1990,1999)).length}</td></tr>
+          <tr><td colSpan="6">Veiculos da Volkswagen: {items.filter(isFromManufacturer("Volkswagen")).length}</td></tr>
+          <tr><td colSpan="6">Veiculos da Honda: {items.filter(isFromManufacturer("Honda")).length}</td></tr>
+          <tr><td colSpan="6">Veiculos da Ford: {items.filter(isFromManufacturer("Ford")).length}</td></tr>
+          <tr><td colSpan="6">Veiculos da Chevrolet: {items.filter(isFromManufacturer("Chevrolet")).length}</td></tr>
           <tr><td colSpan="6"><button type="button" name="button" onClick={() => this.onNewItem()}>Novo veiculo</button></td></tr>
         </tbody>
       </table>
